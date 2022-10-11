@@ -1,0 +1,35 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    name: Java ${{ matrix.java }} ${{ matrix.os }}
+    strategy:
+      matrix:
+        java: [11]
+        os: [macos-latest]
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: main
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Checkout smithy-typescript repo
+        uses: actions/checkout@v2
+        with:
+          repository: awslabs/smithy-typescript
+          path: smithy-typescript
+
+      - name: pwd
+        run: pwd
+
+      - name: list files
+        run: ls
